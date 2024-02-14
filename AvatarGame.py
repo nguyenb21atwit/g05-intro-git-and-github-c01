@@ -10,6 +10,7 @@ class Player:
         self.attack = 1
         self.defence = 1
         self.hp = self.max_hp
+        self.money = 0
 
     def switch_element(self, new_element):
         self.current_element = new_element
@@ -172,11 +173,32 @@ def new_battle(player, enemy):
     if battle_result:
         print(f"\nCongratulations! You obtained the {enemy.element} element.")
         player.elements.append(enemy.element)
+        player.money += random.randint(50, 150)
         return True
     else:
         print("YOU DIED")
 
     return False
+
+def shop_menu(player):
+    print("Welcome to the shop!")
+    while True:
+        print("You have " + str(player.money) + " coins")
+        print("Select an upgrade to purchase, or 0 to cancel.")
+        print("0. Cancel")
+        print("1. Health Upgrade (50 Coins)")
+
+        action = input("Enter your choice: ")
+        if action == "0":
+            return
+        if action == "1":
+            if player.money < 50:
+                print("Need 50 coins for Health Upgrade")
+                continue
+            player.max_hp += 100
+            player.hp = player.max_hp
+            player.money -= 50
+            continue
 
 def main():
     player = Player("Player")
@@ -188,9 +210,12 @@ def main():
 
     #first battle: Water Lord (North)
     if new_battle(player, Enemy("Water Lord", "Water")):
+        shop_menu(player)
         #second battle: choose between Fire Lord (West) and Earth Lord (East)
         if new_battle(player, Enemy("Fire Lord", "Fire")):
+            shop_menu(player)
             if new_battle(player, Enemy("Earth Lord", "Earth")):
+                shop_menu(player)
                 #final battle: Elemental Master (South)
                 if new_battle(player, Enemy("Elemental Master", "Air")):
                     print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
