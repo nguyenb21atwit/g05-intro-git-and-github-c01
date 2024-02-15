@@ -3,7 +3,7 @@ import random
 class Player:
     def __init__(self, name):
         self.name = name
-        self.elements = ["Air"]
+        self.elements = ["Air", "Earth", "Water", "Fire"]
         self.current_element = "Air"
         self.stamina = 200
         self.max_hp = 1000
@@ -38,6 +38,7 @@ def battle(player, enemy):
         print("2. Heavy Attack")
         print("3. Special Attack")
         print("4. Switch Element")
+        #print("5. Enter Shop")
 
         action = input("Enter your choice (1, 2, 3, 4): ")
 
@@ -90,6 +91,15 @@ def battle(player, enemy):
         else:
             print("Invalid choice. Please enter 1, 2, 3, 4.")
             continue
+
+        #elif action == '5':
+            #switch_element(player.shop_menu)
+            #enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+            #player.hp -= enemy_damage
+            #print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
+        #else:
+            #print("Invalid choice. Please enter 1, 2, 3, 4, 5.")
+            #continue
 
         
     if player.hp <= 0:
@@ -159,14 +169,16 @@ def switch_element(player):
     for i, element in enumerate(player.elements, start=1):
         print(f"{i}. {element}")
 
-    choice = input("Enter your choice (1 or 2): ")
+    choice = input("Enter your choice (1, 2, 3, 4): ")
 
-    if choice.isdigit() and 1 <= int(choice) <= 2:
+    if choice.isdigit() and 1 <= int(choice) <= 4:
+        # print("Choice: " + choice)
+        # print(len(player.elements))
         new_element = player.elements[int(choice) - 1]
         player.switch_element(new_element)
         print(f"You switched to {new_element} element.")
     else:
-        print("Invalid choice. Please enter 1 or 2.")
+        print("Invalid choice. Please choose from 1, 2, 3, 4.")
 
 def new_battle(player, enemy):
     battle_result = battle(player, enemy)
